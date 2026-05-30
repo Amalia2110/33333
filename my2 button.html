@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Убегающая кнопка</title>
+    <style>
+        #runawayBtn {
+            position: absolute;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <button id="runawayBtn">НЕТ!</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const btn = document.getElementById("runawayBtn");
+
+            // Начальная позиция в центре
+            btn.style.left = "50%";
+            btn.style.top = "50%";
+
+            btn.addEventListener("mousemove", (event) => {
+                // Получаем размеры кнопки и окна
+                const btnRect = btn.getBoundingClientRect();
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+
+                // Рассчитываем смещение (на 120 px в противоположную сторону)
+                const maxDistance = 120;
+                const deltaX = event.clientX > btnRect.left + btnRect.width / 2 ? -maxDistance : maxDistance;
+                const deltaY = event.clientY > btnRect.top + btnRect.height / 2 ? -maxDistance : maxDistance;
+
+                // Новые координаты с учётом границ окна
+                let newX = Math.max(50, Math.min(windowWidth - btnRect.width - 50, btnRect.left + deltaX));
+                let newY = Math.max(50, Math.min(windowHeight - btnRect.height - 50, btnRect.top + deltaY));
+
+                // Применяем новые координаты
+                btn.style.left = newX + "px";
+                btn.style.top = newY + "px";
+            });
+        });
+    </script>
+</body>
+</html>
